@@ -10,18 +10,17 @@ const Stack = createStackNavigator();
 
 const Stacks = () => {
     return(
-       
     <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name='Login' component={Login} options={{ 
+        <Stack.Screen name='Loading' component={Loading} options={{ 
             headerShown: true, 
-            title: 'Авторизація', 
+            title: 'Завантаження', 
             headerTintColor: '#46c433', 
             headerTitleAlign: 'center',
             headerTitleStyle:
             {fontFamily: 'mt'}}}/>
-        <Stack.Screen name='Loading' component={Loading} options={{ 
+        <Stack.Screen name='Login' component={Login} options={{ 
             headerShown: true, 
-            title: 'Завантаження', 
+            title: 'Авторизація', 
             headerTintColor: '#46c433', 
             headerTitleAlign: 'center',
             headerTitleStyle:
