@@ -21,7 +21,7 @@ const Stacks = () => {
         <Stack.Screen name='Login' component={Login} options={{ 
             headerShown: true, 
             title: 'Авторизація', 
-            headerTintColor: '#46c433', 
+            headerTintColor: '#46c433',
             headerTitleAlign: 'center',
             headerTitleStyle:
             {fontFamily: 'mt'}}}/>

@@ -7,7 +7,9 @@ import { TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
 export const MainPage = ({navigation}) => {
   return (
     <View>
-        <Text>Вся країна</Text>
+        <TouchableOpacity style={styles.categview}>
+            <Text style={styles.category}>Вся країна</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -19,4 +21,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  category:{
+    marginTop: '3%',
+    fontFamily: 'mt-bold',
+    fontSize: 25,
+    backgroundColor: '#46c433',
+    textAlign: 'center',
+    padding: '6%',
+    paddingHorizontal: '20%',
+    borderRadius: 15
+  },
+  categview:{
+    alignItems: 'center',
+    marginHorizontal: '10%'
+  }
 });
