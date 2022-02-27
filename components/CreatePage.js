@@ -85,12 +85,11 @@ export const CreatePage = ({navigation}) => {
           return remoteURL;
     }
 
-    
-
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null)
 
     const UploadData = async () => {
+        console.log(location)
         uploadImage().then((url) => {
         const db = firebase.firestore();
         db.collection("posts")
@@ -117,11 +116,11 @@ export const CreatePage = ({navigation}) => {
   
         if (!result.cancelled) {
           setImage(result.uri);
-          let location = await Location.getCurrentPositionAsync({});
+          await Location.getCurrentPositionAsync({}).then((location) => {
             setLocation(location)
+          });
         }
-        else {
-        }  
+        else {}
       };
 
 
@@ -145,7 +144,7 @@ export const CreatePage = ({navigation}) => {
                 setTown(region)
             })}
         else{
-          UploadData()
+            UploadData()
       }
     }
 

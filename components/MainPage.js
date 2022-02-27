@@ -1,15 +1,70 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { LogBox } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import moment from 'moment';
+import 'moment/locale/ru'  // Перевод времени на русский
+moment.locale('ru')
+
+LogBox.ignoreLogs(['Warning: Can\'t perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.']);
+LogBox.ignoreLogs(['Setting a timer for a long period of time', '[react-native-gesture-handler]', 'AsyncStorage has been extracted'])
+
+const WIDTH = Dimensions.get('window').width
+const HEIGHT = Dimensions.get('window').height
 
 export const MainPage = ({navigation}) => {
+
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    firebase.firestore().collection('posts').orderBy('date', 'desc').onSnapshot(querySnapshot => {
+        const posts = [];
+  
+        querySnapshot.docs.forEach(documentSnapshot => {
+          posts.push({
+            ...documentSnapshot.data(),
+            key: documentSnapshot.id,
+          });
+        });
+  
+        setPosts(posts);
+      });
+  }, []);
+
   return (
     <View style={{flex: 1}}>
         <TouchableOpacity style={styles.categview}>
             <Text style={styles.category}>Вся країна</Text>
         </TouchableOpacity>
+        <FlatList 
+          data={posts}
+          numColumns={2}
+          ListEmptyComponent={
+            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+                <Text style={{ fontFamily: 'mt', textAlign: 'center', justifyContent: 'center' }}>Мы не нашли ни одного объявления</Text>
+            </View>}
+          renderItem={({item}) => (
+           <TouchableOpacity style={styles.recblock} onPress={() => navigation.navigate('Full',
+           {
+            image: item.image.toString(),
+            city: item.city,
+            full: item.full,
+            latitude: item.latitude,
+            longitude: item.longitude,
+            date: moment(item.date.toDate()).fromNow(),
+           })}>
+              <View style={{alignItems: 'center'}}>
+                  <Image source={{uri: item.image}} style={styles.blockimage} />
+              </View>
+              <Text style={styles.blocktown}>{item.city}</Text>
+              <Text style={styles.blockDate}>{moment(item.date.toDate()).fromNow().charAt(0).toUpperCase() + moment(item.date.toDate()).fromNow().slice(1)}</Text>
+           </TouchableOpacity>
+        )} 
+        />
         <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CreatePage')}>
           <AntDesign name="plus" size={35} color="white" />
         </TouchableOpacity>
@@ -36,7 +91,8 @@ const styles = StyleSheet.create({
   },
   categview:{
     alignItems: 'center',
-    marginHorizontal: '10%'
+    marginHorizontal: '10%',
+    marginBottom: '3%'
   },
   floatingButton:{
     elevation: 5,
@@ -49,5 +105,19 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: '#46c433',
     borderRadius: 100,
+  },
+  recblock:{
+    width: WIDTH / 2 - 10,
+    backgroundColor:'#fff',
+    borderRadius: 5,
+    marginLeft: '1.5%',
+    marginRight: '0.5%',
+    marginBottom: '2%'
+  },
+  blockimage: {
+    resizeMode: 'cover',
+    width: WIDTH / 2 - 10,
+    height: WIDTH / 2,
+    borderRadius: 3,
   },
 });

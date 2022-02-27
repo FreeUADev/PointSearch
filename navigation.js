@@ -6,6 +6,7 @@ import { Loading } from './components/Loading';
 import 'react-native-gesture-handler';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Dimensions, Image, Modal, Pressable } from 'react-native';
 import { CreatePage } from './components/CreatePage';
+import { Full } from './components/Full';
 
 const WIDTH = Dimensions.get('window').width
 const Stack = createStackNavigator();
@@ -41,6 +42,13 @@ const Stacks = () => {
             headerTitleAlign: 'center',
             headerTitleStyle:
             {fontFamily: 'mt'}}}/>
+        <Stack.Screen name='Full' component={Full} options={{ 
+            headerShown: true, 
+            title: 'Огляд мітки', 
+            headerTintColor: '#46c433', 
+            headerTitleAlign: 'center',
+            headerTitleStyle:
+            {fontFamily: 'mt'}}}/>      
     </Stack.Navigator>
     )
 }
