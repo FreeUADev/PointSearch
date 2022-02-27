@@ -12,7 +12,8 @@ const WIDTH = Dimensions.get('window').width
 export default function App() {
   const fonts = () => Font.loadAsync({
     'mt': require('./assets/fonts/Montserrat.ttf'),
-    'mt-bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'mt-med': require('./assets/fonts/Montserrat-SemiBold.ttf'),
+    'mt-bold': require('./assets/fonts/Montserrat-Bold.ttf')
   });
   const [font, setFont] = useState(false);
 
