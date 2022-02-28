@@ -25,6 +25,17 @@ export const Full = ({navigation, route}) => {
                 <Text style={styles.city}>Довгота</Text>
                 <Text style={styles.city}>{longitude}</Text>
           </View>
+          <Text style={styles.info}>Додаткова інформація</Text>
+          <Text style={styles.infotext}>{full}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Track', {
+            latitude: latitude,
+            longitude: longitude,
+            full: full,
+            image: image.toString(),
+            city: city
+          })}>
+              <Text style={styles.build}>Показати на карті</Text>
+          </TouchableOpacity>
       </View>
     );
 }
@@ -45,5 +56,26 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: '5%',
     marginVertical: '3%'
+  },
+  build:{
+    fontFamily: 'mt-med',
+    fontSize: 20,
+    marginHorizontal: '5%',
+    marginVertical: '3%',
+    textAlign: 'center',
+    backgroundColor: '#46c433',
+    borderRadius: 20,
+    padding: '5%'
+  },
+  info:{
+    fontFamily: 'mt',
+    fontSize: 15,
+    textAlign: 'center',
+    marginBottom: '3%'
+  },
+  infotext:{
+    fontFamily: 'mt',
+    fontSize: 15,
+    marginHorizontal: '5%',
   }
 });

@@ -7,6 +7,7 @@ import 'react-native-gesture-handler';
 import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Dimensions, Image, Modal, Pressable } from 'react-native';
 import { CreatePage } from './components/CreatePage';
 import { Full } from './components/Full';
+import { Track } from './components/Track';
 
 const WIDTH = Dimensions.get('window').width
 const Stack = createStackNavigator();
@@ -48,7 +49,14 @@ const Stacks = () => {
             headerTintColor: '#46c433', 
             headerTitleAlign: 'center',
             headerTitleStyle:
-            {fontFamily: 'mt'}}}/>      
+            {fontFamily: 'mt'}}}/>
+        <Stack.Screen name='Track' component={Track} options={{ 
+            headerShown: true, 
+            title: 'Мітка на карті', 
+            headerTintColor: '#46c433', 
+            headerTitleAlign: 'center',
+            headerTitleStyle:
+            {fontFamily: 'mt'}}}/>
     </Stack.Navigator>
     )
 }
