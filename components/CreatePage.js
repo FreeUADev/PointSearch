@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Image, Alert, Platform, Modal, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Image, Alert, Platform, Modal, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import firebase from 'firebase/app';
@@ -73,7 +73,7 @@ export const CreatePage = ({navigation}) => {
           });
           
           // Create a ref in Firebase (I'm using my user's ID)
-          const ref = firebase.storage().ref().child('Photos');
+          const ref = firebase.storage().ref().child(Date.now().toString());
           
           // Upload blob to Firebase
           const snapshot = await ref.put(blob, { contentType: "image/png" });
@@ -89,6 +89,7 @@ export const CreatePage = ({navigation}) => {
     const [imageUrl, setImageUrl] = useState(null)
 
     const UploadData = async () => {
+        setUploading(true)
         console.log(location)
         uploadImage().then((url) => {
         const db = firebase.firestore();
@@ -102,6 +103,7 @@ export const CreatePage = ({navigation}) => {
               longitude: location['coords']['longitude'],
               date: firebase.firestore.Timestamp.now(),
         })
+        setUploading(false)
         navigation.goBack()
         })
     }
@@ -149,8 +151,15 @@ export const CreatePage = ({navigation}) => {
     }
 
   return (
+    <>
+    {uploading ? 
+        <View style={styles.uploading}>
+          <Text style={styles.wait}>Зачекайте...</Text>
+          <ActivityIndicator size={100} color={'#46c433'}/>
+        </View> :
       <KeyboardAvoidingView style={{flex: 1}}>
-          <ScrollView>
+        
+        <ScrollView>
         {! image ? 
         <TouchableOpacity style={styles.pickedImage} onPress={pickImage}>
             <Text style={{fontFamily: 'mt', fontSize: 16, textAlign: 'center'}}>Натисніть для завантаження зображення</Text>
@@ -196,9 +205,9 @@ export const CreatePage = ({navigation}) => {
               changeModalVisibility={changeModalVisibility}
               setData={setData}
             />
-        </Modal>
-        
-    </KeyboardAvoidingView>
+        </Modal>  
+      </KeyboardAvoidingView>}
+    </>
   );
 }
 
@@ -285,5 +294,18 @@ const styles = StyleSheet.create({
     color: '#8c8c8c',
     textAlign: 'center',
     marginBottom: '3%'
+  },
+  uploading:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: WIDTH,
+    height: HEIGHT
+  },
+  wait:{
+    color: '#46c433',
+    textAlign: "center",
+    fontSize: 20,
+    fontFamily: 'mt-med',
   }
 });

@@ -8,8 +8,6 @@ import { useState } from 'react';
 const WIDTH = Dimensions.get('window').width
 const HEIGHT = Dimensions.get('window').height
 
-
-
 export const Track = ({navigation, route}) => {
 
     const {latitude, longitude, full, image, city} = route.params

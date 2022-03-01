@@ -27,9 +27,9 @@ const Loading = ({navigation}) => {
     checkIfLoggedIn()
 
     return (
-      <SafeAreaView style={styles.main}>
+      <View style={styles.main}>
           <ActivityIndicator size={100} color={'#46c433'}/>
-      </SafeAreaView>
+      </View>
     );
   }
 

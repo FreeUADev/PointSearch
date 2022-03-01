@@ -1,25 +1,53 @@
 import { useState, useEffect } from 'react';
 import { LogBox } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Image, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import moment from 'moment';
-import 'moment/locale/ru'  // Перевод времени на русский
-moment.locale('ru')
+import 'moment/locale/uk'  // Переклад часу українською
+moment.locale('uk');
 
 LogBox.ignoreLogs(['Warning: Can\'t perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.']);
-LogBox.ignoreLogs(['Setting a timer for a long period of time', '[react-native-gesture-handler]', 'AsyncStorage has been extracted'])
+LogBox.ignoreLogs(['Setting a timer for a long period of time', '[react-native-gesture-handler]', 'AsyncStorage has been extracted', 'The action \'GO_BACK\' was not handled by any navigator.'])
 
 const WIDTH = Dimensions.get('window').width
 const HEIGHT = Dimensions.get('window').height
 
 export const MainPage = ({navigation}) => {
 
-  const [posts, setPosts] = useState([])
+  const [visible, setVisible] = useState(false)
 
+  const [posts, setPosts] = useState([])
+  // 25
+  const cities = [
+  'Київська', 
+  'Вінницька', 
+  'Волинська', 
+  'Дніпропетровська', 
+  'Донецька', 
+  'Житомирська', 
+  'Закарпатська',
+  'Запорізька', 
+  'Івано-Франківська', 
+  'Київська', 
+  'Кіровоградська', 
+  'Луганська', 
+  'Львівська', 
+  'Миколаївська', 
+  'Одеська', 
+  'Полтавська', 
+  'Рівненська', 
+  'Сумська', 
+  'Тернопільська', 
+  'Харківська', 
+  'Херсонська', 
+  'Хмельницька', 
+  'Черкаська', 
+  'Чернівецька', 
+  'Чернігівська']
+  
   useEffect(() => {
     firebase.firestore().collection('posts').orderBy('date', 'desc').onSnapshot(querySnapshot => {
         const posts = [];
@@ -37,7 +65,7 @@ export const MainPage = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-        <TouchableOpacity style={styles.categview}>
+        <TouchableOpacity style={styles.categview} onPress={() => setVisible(true)}>
             <Text style={styles.category}>Вся країна</Text>
         </TouchableOpacity>
         <FlatList 
@@ -45,7 +73,7 @@ export const MainPage = ({navigation}) => {
           numColumns={2}
           ListEmptyComponent={
             <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <Text style={{ fontFamily: 'mt', textAlign: 'center', justifyContent: 'center' }}>Мы не нашли ни одного объявления</Text>
+                <Text style={{ fontFamily: 'mt', textAlign: 'center', justifyContent: 'center' }}>Ми не знайшли жодної мітки</Text>
             </View>}
           renderItem={({item}) => (
            <TouchableOpacity style={styles.recblock} onPress={() => navigation.navigate('Full',
@@ -68,6 +96,20 @@ export const MainPage = ({navigation}) => {
         <TouchableOpacity style={styles.floatingButton} onPress={() => navigation.navigate('CreatePage')}>
           <AntDesign name="plus" size={35} color="white" />
         </TouchableOpacity>
+        <Modal
+        animationType={'fade'}
+        transparent={true}
+        visible={visible}>
+          <FlatList 
+          data={cities}
+          keyExtractor={(item, index) => 'key'+index}
+          renderItem={({item}) => (
+            <TouchableOpacity>
+              <Text>{item}</Text>
+            </TouchableOpacity>
+          )}
+          />
+        </Modal>
     </View>
   );
 }

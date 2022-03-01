@@ -26,7 +26,7 @@ export const Full = ({navigation, route}) => {
                 <Text style={styles.city}>{longitude}</Text>
           </View>
           <Text style={styles.info}>Додаткова інформація</Text>
-          <Text style={styles.infotext}>{full}</Text>
+          {full ? <Text style={styles.infotext}>{full}</Text> : <Text style={styles.noinfo}>Немає</Text>}
           <TouchableOpacity onPress={() => navigation.navigate('Track', {
             latitude: latitude,
             longitude: longitude,
@@ -77,5 +77,11 @@ const styles = StyleSheet.create({
     fontFamily: 'mt',
     fontSize: 15,
     marginHorizontal: '5%',
+  },
+  noinfo:{
+    fontFamily: 'mt',
+    fontSize: 15,
+    marginHorizontal: '5%',
+    color: '#8c8c8c'
   }
 });
