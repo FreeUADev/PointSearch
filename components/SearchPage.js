@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity, FlatList, Dimensions, Image, Modal } from 'react-native';
 import firebase from 'firebase/app'
@@ -61,6 +60,8 @@ export const SearchPage = ({navigation, route}) => {
         setPosts(post);
         });
     }, [visible]);
+
+    // npm install react-native-gesture-handler@2.1.0 react-native-maps@0.29.4 react-native-safe-area-context@3.3.2
 
     return (
         <View style={{flex: 1}}>

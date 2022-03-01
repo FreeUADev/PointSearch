@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions, Image, Alert, Platform, Modal, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import firebase from 'firebase/app';
 import * as ImagePicker from 'expo-image-picker';

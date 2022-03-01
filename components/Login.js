@@ -1,7 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, Dimensions, Image, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import firebase from 'firebase/app'
 import { auth } from '../API/Firebase';
 
@@ -26,9 +25,9 @@ const Login = ({navigation}) => {
     }, [])
 
     return (
-      <SafeAreaView style={styles.main}>
+      <View style={styles.main}>
           <ActivityIndicator size={100} color={'#46c433'}/>
-      </SafeAreaView>
+      </View>
     );
   }
 

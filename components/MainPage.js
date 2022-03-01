@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LogBox } from 'react-native';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Dimensions, Image, Modal } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
