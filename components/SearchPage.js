@@ -1,39 +1,71 @@
-import { StatusBar } from 'expo-status-bar';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity, FlatList, Dimensions, Image } from 'react-native';
+import { TouchableOpacity, FlatList, Dimensions, Image, Modal } from 'react-native';
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import moment from 'moment';
+import 'moment/locale/uk'  // Переклад часу українською
+moment.locale('uk');
 const WIDTH = Dimensions.get('window').width
 const HEIGHT = Dimensions.get('window').height
 
-export const ClothesPage = ({navigation, route}) => {
+export const SearchPage = ({navigation, route}) => {
     const db = firebase.firestore()
 
     const {city} = route.params
+
+    const [visible, setVisible] = useState(false)
+
+    const cities = [
+        'Київська область',
+        'Вінницька область',
+        'Волинська область',
+        'Дніпропетровська область',
+        'Донецька область',
+        'Житомирська область',
+        'Закарпатська область',
+        'Запорізька область',
+        'Івано-Франківська область',
+        'Київська область',
+        'Кіровоградська область',
+        'Луганська область',
+        'Львівська область',
+        'Миколаївська область',
+        'Одеська область',
+        'Полтавська область',
+        'Рівненська область',
+        'Сумська область',
+        'Тернопільська область',
+        'Харківська область',
+        'Херсонська область',
+        'Хмельницька область',
+        'Черкаська область',
+        'Чернівецька область',
+        'Чернігівська область'
+    ]
 
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         const post = [];
-
-          db.collection('posts').orderBy('date', 'desc').startAt(city).endAt('' + '\uf8ff').get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-            post.push({
-              ...doc.data(),
-              key: doc.id,
-            });
-          })
+            db.collection('posts').orderBy('date', 'desc').where('city', '==', city).get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                post.push({
+                  ...doc.data(),
+                  key: doc.id,
+                });
+            })
         setPosts(post);
         });
-    }, []);
+    }, [visible]);
 
     return (
         <View style={{flex: 1}}>
-            <TouchableOpacity style={styles.categview}>
-                <Text style={styles.category}>Вся країна</Text>
+            <TouchableOpacity style={styles.categview} onPress={() => setVisible(true)}>
+                <Text style={styles.category}>{city}</Text>
             </TouchableOpacity>
             <FlatList 
               data={posts}
@@ -60,6 +92,37 @@ export const ClothesPage = ({navigation, route}) => {
                </TouchableOpacity>
             )} 
             />
+            <Modal
+        animationType={'fade'}
+        transparent={true}
+        visible={visible}>
+          <View style={styles.modal} onPress={() => setVisible(false)}>
+            
+            <FlatList 
+              data={cities}
+              keyExtractor={(item, index) => 'key'+index}
+              ListHeaderComponent={
+                <TouchableOpacity style={styles.option} onPress={() => {
+                  setVisible(false)
+                  navigation.replace('MainPage')
+                }}>
+                  <Text style={styles.cityname}>Вся країна</Text>
+                </TouchableOpacity>
+              }
+              renderItem={({item}) => (
+                <TouchableOpacity style={styles.option} onPress={() => {
+                  setVisible(false)
+                  navigation.navigate('SearchPage', {
+                  city: item.toString()
+                })
+                console.log(item)
+                }}>
+                    <Text style={styles.cityname}>{item}</Text>
+                </TouchableOpacity>
+            )}
+            />
+          </View>
+        </Modal>
         </View>
       );
     }
@@ -74,7 +137,7 @@ export const ClothesPage = ({navigation, route}) => {
       category:{
         marginTop: '3%',
         fontFamily: 'mt-med',
-        fontSize: 25,
+        fontSize: 18,
         backgroundColor: '#46c433',
         textAlign: 'center',
         padding: '4%',
@@ -112,5 +175,18 @@ export const ClothesPage = ({navigation, route}) => {
         height: WIDTH / 2,
         borderRadius: 3,
       },
+      modal:{
+        backgroundColor: '#46c433',
+        width: WIDTH,
+        height: HEIGHT
+      },
+      option:{
+        alignItems: 'flex-start'
+      },
+      cityname:{
+        margin: 20,
+        fontSize: 18,
+        fontFamily: 'mt-bold'
+      }
     });
     

@@ -22,31 +22,31 @@ export const MainPage = ({navigation}) => {
   const [posts, setPosts] = useState([])
   // 25
   const cities = [
-  'Київська', 
-  'Вінницька', 
-  'Волинська', 
-  'Дніпропетровська', 
-  'Донецька', 
-  'Житомирська', 
-  'Закарпатська',
-  'Запорізька', 
-  'Івано-Франківська', 
-  'Київська', 
-  'Кіровоградська', 
-  'Луганська', 
-  'Львівська', 
-  'Миколаївська', 
-  'Одеська', 
-  'Полтавська', 
-  'Рівненська', 
-  'Сумська', 
-  'Тернопільська', 
-  'Харківська', 
-  'Херсонська', 
-  'Хмельницька', 
-  'Черкаська', 
-  'Чернівецька', 
-  'Чернігівська']
+    'Київська область',
+    'Вінницька область',
+    'Волинська область',
+    'Дніпропетровська область',
+    'Донецька область',
+    'Житомирська область',
+    'Закарпатська область',
+    'Запорізька область',
+    'Івано-Франківська область',
+    'Київська область',
+    'Кіровоградська область',
+    'Луганська область',
+    'Львівська область',
+    'Миколаївська область',
+    'Одеська область',
+    'Полтавська область',
+    'Рівненська область',
+    'Сумська область',
+    'Тернопільська область',
+    'Харківська область',
+    'Херсонська область',
+    'Хмельницька область',
+    'Черкаська область',
+    'Чернівецька область',
+    'Чернігівська область']
   
   useEffect(() => {
     firebase.firestore().collection('posts').orderBy('date', 'desc').onSnapshot(querySnapshot => {
@@ -100,15 +100,35 @@ export const MainPage = ({navigation}) => {
         animationType={'fade'}
         transparent={true}
         visible={visible}>
-          <FlatList 
-          data={cities}
-          keyExtractor={(item, index) => 'key'+index}
-          renderItem={({item}) => (
-            <TouchableOpacity>
-              <Text>{item}</Text>
-            </TouchableOpacity>
-          )}
-          />
+          <View style={styles.modal} onPress={() => setVisible(false)}>
+            
+            <FlatList 
+              data={cities}
+              keyExtractor={(item, index) => 'key'+index}
+              ListHeaderComponent={
+                <TouchableOpacity style={styles.option} onPress={() => {
+                  setVisible(false)
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'MainPage' }],
+                  });
+                }}>
+                  <Text style={styles.cityname}>Вся країна</Text>
+                </TouchableOpacity>
+              }
+              renderItem={({item}) => (
+                <TouchableOpacity style={styles.option} onPress={() => {
+                  setVisible(false)
+                  navigation.navigate('SearchPage', {
+                  city: item.toString()
+                })
+                console.log(item)
+                }}>
+                    <Text style={styles.cityname}>{item}</Text>
+                </TouchableOpacity>
+            )}
+            />
+          </View>
         </Modal>
     </View>
   );
@@ -162,4 +182,17 @@ const styles = StyleSheet.create({
     height: WIDTH / 2,
     borderRadius: 3,
   },
+  modal:{
+    backgroundColor: '#46c433',
+    width: WIDTH,
+    height: HEIGHT
+  },
+  option:{
+    alignItems: 'flex-start'
+  },
+  cityname:{
+    margin: 20,
+    fontSize: 18,
+    fontFamily: 'mt-bold'
+  }
 });

@@ -13,21 +13,7 @@ import * as Location from 'expo-location';
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
 
-let addImgPadding
-let addCityPadding
-let addCategoryPadding 
-if(Platform.OS === 'android'){
-  if(Platform.Version < 27) {
-    addImgPadding = '5.5%'
-    addCityPadding = '16%'
-    addCategoryPadding = '10%'
-  }
-  else{
-    addImgPadding = '11%'
-    addCityPadding = '20%'
-    addCategoryPadding = '14%'
-  }
-}
+
 
 export const CreatePage = ({navigation}) => {
 
@@ -142,11 +128,12 @@ export const CreatePage = ({navigation}) => {
         } else if (!image) {
           Alert.alert('Необхідно завантажити зображення');
         } else if(Town == 'Автовизначення') {
-            getCity().then((region) => {
-                setTown(region)
-            })}
+          getCity().then((region) => {
+              setTown(region)
+          })
+        } 
         else{
-            UploadData()
+          UploadData()
       }
     }
 
@@ -170,7 +157,10 @@ export const CreatePage = ({navigation}) => {
         </TouchableOpacity>}
             <TouchableOpacity style={styles.choosetowndiv} onPress={() => changeModalVisibility(true)}>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.choosetown}>{Town}</Text>
+                  {Town.length <= 20 ?
+                  <Text style={styles.choosetowns}>{Town}</Text>
+                  : 
+                  <Text style={styles.choosetownl}>{Town}</Text>}
                    <View style={styles.imgIconContainer}>
                         <MaterialIcons name="location-city" size={35} color="black" />
                    </View>
@@ -264,13 +254,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#46c433',
     borderRadius: 100,
   },
-  choosetown:{
+  choosetowns:{
     color: '#000',
     backgroundColor: '#46c433',
     fontFamily: 'mt-bold',
-    fontSize: 18,
+    fontSize: 15,
     paddingVertical: '5%',
-    paddingHorizontal: addCityPadding,
+    paddingHorizontal: '15%',
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10
+  },
+  choosetownl:{
+    color: '#000',
+    backgroundColor: '#46c433',
+    fontFamily: 'mt-bold',
+    fontSize: 15,
+    paddingVertical: '5%',
+    paddingHorizontal: '10%',
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10
   },

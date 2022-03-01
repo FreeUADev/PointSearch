@@ -8,6 +8,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Dimension
 import { CreatePage } from './components/CreatePage';
 import { Full } from './components/Full';
 import { Track } from './components/Track';
+import { SearchPage } from './components/SearchPage';
 
 const WIDTH = Dimensions.get('window').width
 const Stack = createStackNavigator();
@@ -53,6 +54,13 @@ const Stacks = () => {
         <Stack.Screen name='Track' component={Track} options={{ 
             headerShown: true, 
             title: 'Мітка на карті', 
+            headerTintColor: '#46c433', 
+            headerTitleAlign: 'center',
+            headerTitleStyle:
+            {fontFamily: 'mt'}}}/>
+        <Stack.Screen name='SearchPage' component={SearchPage} options={{ 
+            headerShown: true, 
+            title: 'Мітки в області', 
             headerTintColor: '#46c433', 
             headerTitleAlign: 'center',
             headerTitleStyle:
